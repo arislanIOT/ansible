@@ -1,16 +1,17 @@
 ---
 - name: 'MySQLD - Instalaltion'
   yum:
-    name: mysql-server
+    name: mariadb-server
     state: present
 
 - name: 'MySQLD - Restarting/Enabling'
   service:
-    name: mysqld
+    name: mariadb
     state: started
     enabled: yes
       
 - name: 'MySQLD - Resetting Root Password'
+  ignore_errors: yes
   mysql_user:
     login_user: root
     login_password: ''

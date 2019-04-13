@@ -26,67 +26,99 @@
 "0	LINE	0
 	   - include_tasks: redhat-apache.yml
 ""1	LINE	0
+	
+"2	LINE	0
+	      igone_errors: yes
+"3	LINE	0
+	---
+	- name: 'MySQLD - Instalaltion'
+	  yum:
+	    name: mysql-server
+	    state: present
+	
+	- name: 'MySQLD - Restarting/Enabling'
+	  service:
+	    name: mysqld
+	    state: started
+	    enabled: yes
+	      
+	- name: 'MySQLD - Resetting Root Password'
+	  mysql_user:
+	    login_user: root
+	    login_password: ''
+	    name: root
+	    host_all: yes
+	    password: "{{ mysql_root }}"
+	
+	- name: 'MySQLD - Removing Anonymous Users'
+	  mysql_user:
+	    login_user: root
+	    login_password: '{{ mysql_root }}'
+	    name: ''
+	    host_all: yes
+	    state: absent
+	
+	- name: 'MySQLD - Creating Database For Wordpress'
+	  mysql_db:
+	    login_user: root
+	    login_password: "{{ mysql_root }}"
+	    db: "{{ mysql_database }}"
+	    state: present
+	
+	- name: 'MySQLD - Creating User For Wordpress'
+	  mysql_user:
+	    login_user: root
+	    login_password: "{{ mysql_root }}"
+	    name: "{{ mysql_user }}"
+	    host: localhost
+	    password: "{{ mysql_password }}"
+	    priv: "{{mysql_database}}.*:ALL"
+"4	LINE	0
+	[amazon]
+"5	LINE	0
+	172.31.20.102  ansible_ssh_port=22  ansible_ssh_user='ec2-user' ansible_ssh_private_key_file='/home/ec2-user/fuji-arislan.pem'
+	
+"6	LINE	0
+	
+"7	LINE	0
+	172.31.23.62  ansible_ssh_port=22 ansible_ssh_user='ubuntu' ansible_ssh_private_key_file='/home/ec2-user/fuji-arislan.pem'
+"8	LINE	0
+	[ubuntu]
+"9	LINE	0
 	---
 	domain: blog.arislan.com
 	mysql_root: mysqlrootpassword
 	mysql_user: wordpress
 	mysql_password: wordpress123
 	mysql_database: wordpress
-"2	LINE	0
-	      - mysql-server
-"3	LINE	0
-	    - httpd
-"4	LINE	0
-	  with_items:
-"5	LINE	0
-	    - mysqld
-"6	LINE	0
-	  i        "ansible_os_family": "RedHat", 
-"7	LINE	0
-	   - include_tasks: redhat-apache.yml
-"8	LINE	0
-	---
-	- hosts: amazon
-	  become: yes
-	  tasks:
-	    - name: Install Httpd And Php Modules
-	      yum:
-	        name:
-	          - httpd
-	          - php
-	          - php-mbstring
-	          - php-soap
-	          - php-mysql
-	   - name: Restart/Enabling Httpd
-	     service:
-	       name: httpd
-	       state: restarted
-	       enabled: yes
-	     when: httpdStatus.changed  or  contentStatus.changed
-"9	LINE	0
-	
 "-	CHAR	0
 	'
 
 # File marks:
-'0  1  4  ~/wordpress/wp-config.j2
-'1  81  31  ~/wordpress/wp-config.j2
-'2  5  0  ~/wordpress/lamp-vars.yml
-'3  43  35  ~/wordpress/mysqld-configuration.yml
-'4  16  15  ~/wordpress/httpd-configuration.yml
-'5  17  19  ~/wordpress/virtualhost-configuration.yml
-'6  4  0  ~/wordpress/virtualhost.j2
-'7  8  6  ~/wordpress/httpd-configuration.yml
-'8  1  24  ~/wordpress/lamp-vars.yml
-'9  10  39  ~/include-demo/main.yml
+'0  14  13  ~/wordpress/mysqld-configuration.yml
+'1  11  4  ~/wordpress/main.yml
+'2  20  49  ~/wordpress/wordpress-installation.yml
+'3  1  2  ~/wordpress/mysqld-configuration.yml
+'4  1  0  ~/wordpress/inventory.ini
+'5  12  0  ~/wordpress/main.yml
+'6  1  4  ~/wordpress/wp-config.j2
+'7  81  31  ~/wordpress/wp-config.j2
+'8  5  0  ~/wordpress/lamp-vars.yml
+'9  16  15  ~/wordpress/httpd-configuration.yml
 
 # Jumplist (newest first):
+-'  14  13  ~/wordpress/mysqld-configuration.yml
+-'  1  0  ~/wordpress/mysqld-configuration.yml
+-'  11  4  ~/wordpress/main.yml
+-'  12  0  ~/wordpress/main.yml
+-'  20  49  ~/wordpress/wordpress-installation.yml
+-'  1  0  ~/wordpress/wordpress-installation.yml
+-'  1  0  ~/wordpress/inventory.ini
+-'  1  0  ~/wordpress/main.yml
 -'  1  4  ~/wordpress/wp-config.j2
 -'  81  31  ~/wordpress/wp-config.j2
 -'  5  0  ~/wordpress/lamp-vars.yml
 -'  1  0  ~/wordpress/lamp-vars.yml
--'  43  35  ~/wordpress/mysqld-configuration.yml
--'  1  0  ~/wordpress/mysqld-configuration.yml
 -'  16  15  ~/wordpress/httpd-configuration.yml
 -'  8  6  ~/wordpress/httpd-configuration.yml
 -'  17  19  ~/wordpress/virtualhost-configuration.yml
@@ -172,14 +204,34 @@
 -'  12  7  ~/03-03-installing-lamp.yml
 -'  4  17  ~/03-02-os-updation.yml
 -'  17  5  ~/03-02-os-updation.yml
--'  11  6  ~/03-02-os-updation.yml
--'  1  0  ~/03-02-os-updation.yml
--'  1  0  ~/03-02-os-updation.tml
--'  7  17  ~/03-01-simple.yml
--'  1  0  ~/03-01-simple.yml
--'  13  21  ~/site-deployment.yml
 
 # History of marks within files (newest to oldest):
+
+> ~/wordpress/mysqld-configuration.yml
+	"	14	13
+	^	14	14
+	.	14	13
+	+	1	3
+	+	44	0
+	+	14	13
+
+> ~/wordpress/main.yml
+	"	11	4
+	.	11	0
+	+	12	0
+	+	11	0
+
+> ~/wordpress/wordpress-installation.yml
+	"	20	49
+	^	20	50
+	.	20	0
+	+	20	0
+
+> ~/wordpress/inventory.ini
+	"	1	0
+	.	1	0
+	+	3	0
+	+	1	0
 
 > ~/wordpress/wp-config.j2
 	"	1	4
@@ -197,12 +249,6 @@
 	+	14	0
 	+	10	0
 	+	5	0
-
-> ~/wordpress/mysqld-configuration.yml
-	"	43	35
-	^	43	36
-	.	43	0
-	+	43	0
 
 > ~/wordpress/httpd-configuration.yml
 	"	16	15
@@ -425,43 +471,3 @@
 	+	2	21
 	+	3	24
 	+	2	18
-
-> ~/nginx.yml
-	"	6	5
-	^	6	16
-	.	6	15
-	+	4	8
-	+	3	49
-	+	5	11
-	+	10	22
-	+	6	15
-
-> ~/04-07-include-vars.yml
-	"	8	81
-	^	8	82
-	.	8	81
-	+	3	27
-	+	6	50
-	+	8	90
-	+	4	5
-	+	8	81
-
-> ~/04-06-debug-task-status.yml
-	"	14	35
-	^	14	36
-	.	14	35
-	+	5	0
-	+	23	0
-	+	4	12
-	+	3	14
-	+	6	29
-	+	11	70
-	+	17	65
-	+	9	20
-	+	13	38
-	+	14	5
-	+	13	12
-	+	14	25
-	+	15	26
-	+	22	17
-	+	14	35

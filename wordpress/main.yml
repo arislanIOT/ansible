@@ -1,0 +1,12 @@
+---
+- name: 'Installing Wordpress On Amazon Linux - 2' 
+  hosts: all
+  become: yes
+  vars_files:
+    - lamp-vars.yml
+  tasks:
+    - include_tasks: httpd-configuration.yml
+    - include_tasks: virtualhost-configuration.yml
+    - include_tasks: mysqld-configuration.yml
+    - include_tasks: wordpress-installation.yml
+ 

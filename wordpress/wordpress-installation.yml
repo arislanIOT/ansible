@@ -1,0 +1,20 @@
+---
+
+- name: 'Wordpress - Downloading.' 
+  get_url:
+    url:  '{{ wordpress_url }}'
+    dest: /tmp/wordpress.tar.gz
+
+- name: 'Wordpress - Extracting'
+  unarchive:
+    src: /tmp/wordpress.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: 'wordpress - Deploying'
+  shell: 'cp -R /tmp/wordpress/*  /var/www/html/{{domain}}/'
+
+- name: 'Wordpress - Extracting'
+  template:
+    src: wp-config.j2
+    dest: '/var/www/html/{{domain}}/wp-config.php'
