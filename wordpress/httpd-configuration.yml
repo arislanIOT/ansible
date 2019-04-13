@@ -1,0 +1,16 @@
+---
+- name: 'Lamp-Stack - Installations.'
+  yum:
+    name:
+      - httpd
+      - php
+      - php-mysql
+      - php-gd
+      - php-mbstring
+    state: present
+      
+- name: 'Lamp-Stack - Service Restarting/Enabling.'
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

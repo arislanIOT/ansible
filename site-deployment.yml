@@ -1,0 +1,23 @@
+---
+- hosts: amazon
+  become: yes
+  tasks:
+   - name: Installing apache webserver
+     yum:
+      name: httpd
+      state: present
+  
+   - name: creating document-root
+     file:
+      path: /var/www/html/
+      state: directory
+
+   - name: Restarting httpd webserver.
+     service:
+      name: httpd
+      state: started
+
+   - name: Copying Index.html
+     copy:
+      src: index.html
+      dest: /var/www/html/  

@@ -1,0 +1,22 @@
+---
+- name: 'Variable Introduction'
+  hosts: amazon
+  become: yes
+  tasks:
+   - name: 'Installing Httpd'
+     yum:
+      name: httpd
+      state: present
+
+   - name: 'Copying Contents To Doc-root And Register The Task OutPut'
+     copy:
+      content: '<h1><center>Site Version1 </center></h1>'
+      dest: /var/www/html/index.html
+     register: copy_status
+
+   - name: 'Restart httpd based on Register values .changed status'
+     when: copy_status.changed # copy_status.changed == true
+     service:
+      name: httpd
+      state: restarted
+      enabled: yes

@@ -1,0 +1,10 @@
+---
+- name: "Installing Apache-Webserver On RedHat/Debian"
+  hosts: all
+  become: yes
+  tasks:
+   - include_tasks: redhat-apache.yml
+     when: ansible_os_family ==  "RedHat"
+
+   - include_tasks: debian-apache.yml
+     when: ansible_os_family == "Debian"

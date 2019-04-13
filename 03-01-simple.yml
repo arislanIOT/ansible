@@ -1,0 +1,7 @@
+---
+- hosts: amazon
+  tasks:
+   - name: 'Creating A dummy file in /tmp called dummy.txt'
+     file:
+      path: /tmp/dummy.txt
+      state: touch

@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  vars_files:
+    - mysql-var.yml
+  tasks:
+   - name: 'Printing Variables From mysql-var.yml'
+     debug:
+       msg: "Password = {{root_password}} User = {{database_user}} Name = {{database_name}}" 

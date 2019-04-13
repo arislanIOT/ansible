@@ -1,0 +1,13 @@
+---
+domain: blog.arislan.com
+
+# Mysql and Wordpress
+
+mysql_root: mysqlrootpassword
+mysql_user: wordpress
+mysql_password: wordpress123
+mysql_database: wordpress
+
+
+# Wordpress Related.
+wordpress_url:  https://wordpress.org/wordpress-latest.tar.gz

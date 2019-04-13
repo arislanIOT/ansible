@@ -1,0 +1,6 @@
+---
+mysql_root_password: mysqlrootpassword123
+wordpress_database: wordpress
+wordpress_user: wpuser
+wordpress_user_password: wpuserpassword123
+

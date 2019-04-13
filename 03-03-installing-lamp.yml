@@ -1,0 +1,37 @@
+---
+- hosts: amazon
+  name: Installing Lamp-Stack
+  become: yes
+  tasks:
+   - name: Installing Packages.
+     yum:
+      name:
+       - httpd
+       - php
+       - php-mysql
+       - mariadb-server
+      state: present
+
+   - name: Restarting/Enabling Tasks.
+     service:
+      name: "{{item}}"
+      state: started
+      enabled: yes
+     with_items:
+      - httpd
+      - mariadb
+
+   - name: Uploading info.php and index.html
+     copy:
+      src: "{{item}}"
+      dest: /var/www/html/
+     with_items:
+      - index.html
+      - info.php
+
+
+
+
+
+
+

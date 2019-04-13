@@ -1,0 +1,15 @@
+---
+- name: 'Variable Introduction'
+  hosts: all
+
+  tasks:
+   - name: 'Creating File.'
+     copy:
+       content: 'dummy content'
+       dest: /tmp/dummy.txt
+     register: file_status     
+
+
+   - name: 'debugging the output of -file_status- variable'
+     debug:
+      var: file_status

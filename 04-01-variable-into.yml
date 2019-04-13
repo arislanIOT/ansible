@@ -1,0 +1,13 @@
+---
+- name: 'Variable Introduction'
+  hosts: all
+  become: yes
+  gather_facts: no
+  vars:
+    filepath: /tmp/variableintro.txt
+
+  tasks:
+   - name: 'Creating File.'
+     file:
+      path: "{{filepath}}"
+      state: touch

@@ -1,0 +1,30 @@
+---
+- hosts: amazon
+  become: yes
+  tasks:
+    - name: Install Httpd And Php Modules
+      yum:
+        name:
+          - httpd
+          - php
+          - php-mbstring
+          - php-soap
+          - php-mysql
+          - php-xml
+          - php-snmp
+        state: present
+      notify: restart-httpd
+
+    - name: Creating PhP Website.
+      copy:
+        content: '<?php phpinfo(); ?>'
+        dest: /var/www/html/index.php
+      notify: restart-httpd
+        
+  handlers:
+    
+    - name: 'restart-httpd'
+      service:
+        name: httpd
+        state: restarted
+        enabled: yes

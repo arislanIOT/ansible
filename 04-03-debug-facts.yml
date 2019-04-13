@@ -1,0 +1,9 @@
+---
+- name: 'Variable Introduction'
+  hosts: all
+  become: yes
+  gather_facts: yes
+  tasks:
+   - name: 'Debuging Facts Variable'
+     debug:
+      var: ansible_os_family

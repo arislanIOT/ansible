@@ -1,0 +1,12 @@
+---
+- name: 'Debian - Installing Apache Webserver'
+  apt:
+    name: apache2
+    state: present
+    update_cache: yes
+
+- name: 'Debian - Restarting/Enabling Apache Webserver'
+  service:
+    name: apache2
+    state: restarted
+    enabled: yes

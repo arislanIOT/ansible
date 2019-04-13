@@ -1,0 +1,11 @@
+---
+- hosts: ubuntu
+  name: "Installing LoadBalanced Flask Application"
+  tasks:
+   - name: Installing Nginx LoadBalancer
+     become: yes
+     apt:
+      name: nginx
+      state: present
+      update_cache: yes
+

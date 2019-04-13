@@ -1,0 +1,43 @@
+---
+- name: 'MySQLD - Instalaltion'
+  yum:
+    name: mysql-server
+    state: present
+
+- name: 'MySQLD - Restarting/Enabling'
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+      
+- name: 'MySQLD - Resetting Root Password'
+  mysql_user:
+    login_user: root
+    login_password: ''
+    name: root
+    host_all: yes
+    password: "{{ mysql_root }}"
+
+- name: 'MySQLD - Removing Anonymous Users'
+  mysql_user:
+    login_user: root
+    login_password: '{{ mysql_root }}'
+    name: ''
+    host_all: yes
+    state: absent
+
+- name: 'MySQLD - Creating Database For Wordpress'
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root }}"
+    db: "{{ mysql_database }}"
+    state: present
+
+- name: 'MySQLD - Creating User For Wordpress'
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root }}"
+    name: "{{ mysql_user }}"
+    host: localhost
+    password: "{{ mysql_password }}"
+    priv: "{{mysql_database}}.*:ALL"

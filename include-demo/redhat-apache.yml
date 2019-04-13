@@ -1,0 +1,11 @@
+---
+- name: 'Redhat - Installing apache webserver'
+  yum:
+    name: httpd
+    state: present
+
+- name: 'Redhat - Restarting/Enabling Apache Webserver'
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

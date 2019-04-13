@@ -1,0 +1,56 @@
+---
+- hosts: amazon
+  name: MariaDB Configuration For Wordpress
+  become: yes
+  vars_files:
+   - mariadb-vars.yml
+  tasks:
+   - name: Mariadb - Installation
+     yum:
+       name:
+         - mariadb-server
+         - MySQL-python
+       state: present
+
+   - name: Mariadb - Restarting
+     service:
+       name: mariadb
+       state: restarted
+       enabled: yes
+   
+   - name: Configuring Maridb-server - Resetting Root Password
+     ignore_errors: yes
+     mysql_user:
+       login_user: root
+       login_password: ''
+       name: root
+       host_all: yes
+       password: "{{mysql_root_password}}"
+
+   - name: Configuring Maridb-server - Removing Anonymous Users.
+     mysql_user:
+       login_user: root
+       login_password: "{{mysql_root_password}}"
+       name: ''
+       host_all: yes
+       state: absent
+
+   - name: Database For Wordpress - Creating Wordpress Databse.
+     mysql_db:
+       login_user: root
+       login_password: "{{mysql_root_password}}"
+       db: "{{wordpress_database}}"
+       state: present
+
+   - name: Database For Wordpress - Creating Wordpress User.
+     mysql_user:
+       login_user: root
+       login_password: "{{mysql_root_password}}"
+       name: "{{wordpress_user}}"
+       password: "{{wordpress_user_password}}"
+       host: localhost
+       state: present
+       priv: "{{wordpress_database}}.*:ALL"
+
+
+

@@ -1,0 +1,17 @@
+---
+- hosts: all
+  name: Updation Operating Systems
+  gather_facts: no
+  become: yes
+  tasks:
+   - name: Updating Debian Based OS
+     when: ansible_os_family == "Debian"
+     apt:
+      name: nano
+      state: latest
+     
+   - name: Updating RedHat based OS
+     yum:
+      name: nano
+      state: latest
+     when: ansible_os_family == "RedHat"

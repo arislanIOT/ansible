@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  tasks:
+   - name: 'Checking Package Is Installed or Not'
+     shell: 'rpm -q nano'
+     register: rpmStatus
+
+   - name: 'Debugging the rpmStatus variable'
+     debug:
+      var: rpmStatus
+
+#   - name: 'Package Is Installed' 
+#     debug:
+#       msg: 'Package Is Installeed'
+#     when: rpmStatus.changed
+
+#   - name: 'Package Is Installed' 
+     

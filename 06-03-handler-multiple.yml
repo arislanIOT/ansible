@@ -1,0 +1,43 @@
+---
+- hosts: amazon
+  become: yes
+  tasks:
+    - name: Install Httpd And Php Modules
+      yum:
+        name:
+          - httpd
+          - php
+          - php-mbstring
+          - php-soap
+          - php-mysql
+          - php-xml
+          - php-ldap
+        state: present
+      notify: 
+        - restart-httpd
+        - handler-dummy1
+
+    - name: Creating PhP Website.
+      copy:
+        content: '<?php phpinfo(); ?>'
+        dest: /var/www/html/index.php
+      notify: 
+        - restart-httpd
+        - handler-dummy1
+        - handler-dummy2
+        
+  handlers:
+    
+    - name: 'restart-httpd'
+      service:
+        name: httpd
+        state: restarted
+        enabled: yes
+
+    - name: 'handler-dummy1'
+      debug:
+        msg: "handler-dummy1 executed"
+          
+    - name: 'handler-dummy2'
+      debug:
+        msg: "handler-dummy2 executed"
