@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    name: fuji
+    password: fuji123 
+  tasks:
+   - name: Creating user "{{ name }}" with admin access
+     user: 
+       name: "{{ name }}"
+       password: "{{ password | password_hash('sha512') }}"
+     
